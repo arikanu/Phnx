@@ -90,50 +90,6 @@
 			<version>1</version>
 		</dependency>
 				
-		
-		
-		
-		
-		
-		<!-- ben ekledim (HIBERNATE) -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.5.1-Final</version>
-		</dependency>
-		<dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.1-901-1.jdbc4</version>
-        </dependency>
-        <!-- ben ekledim (HIBERNATE) -->
-        
-        <!-- ben ekledim (SPRING SECURITY) -->
-        <dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>3.1.4.RELEASE</version>
-		</dependency>
-	    <dependency>
-	        <groupId>org.springframework.security</groupId>
-	        <artifactId>spring-security-web</artifactId>
-	        <version>3.1.4.RELEASE</version>
-	    </dependency>
-	    <dependency>
-	        <groupId>org.springframework.security</groupId>
-	        <artifactId>spring-security-config</artifactId>
-	        <version>3.1.4.RELEASE</version>
-	    </dependency>
-		<!-- ben ekledim (SPRING SECURITY) -->
-				
-				
-				
-				
-				
-				
-				
-				
-				
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -159,7 +115,48 @@
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
 			<scope>test</scope>
-		</dependency>        
+		</dependency>  
+		
+		<!-- SPRING SECURITY -->
+        <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>3.1.4.RELEASE</version>
+		</dependency>
+	    <dependency>
+	        <groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-web</artifactId>
+	        <version>3.1.4.RELEASE</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-config</artifactId>
+	        <version>3.1.4.RELEASE</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-taglibs</artifactId>
+	        <version>3.1.4.RELEASE</version>
+	        <exclusions>
+	            <exclusion>
+	                <artifactId>spring-aop</artifactId>
+	                <groupId>org.springframework</groupId>
+	            </exclusion>
+	        </exclusions>
+	    </dependency>
+	    
+	    <!-- HIBERNATE -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>3.5.1-Final</version>
+		</dependency>
+		<dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901-1.jdbc4</version>
+        </dependency>
+		      
 	</dependencies>
     <build>
         <plugins>

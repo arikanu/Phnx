@@ -5,20 +5,21 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
-import com.phoenix.mvc.db.entities.Choice;
-import com.phoenix.mvc.db.entities.Exam;
-import com.phoenix.mvc.db.entities.ExamMasterPart;
-import com.phoenix.mvc.db.entities.ExamPart;
-import com.phoenix.mvc.db.entities.ExamType;
-import com.phoenix.mvc.db.entities.Question;
-import com.phoenix.mvc.db.entities.Role;
-import com.phoenix.mvc.db.entities.User;
+import com.phoenix.mvc.db.entities.exam.Choice;
+import com.phoenix.mvc.db.entities.exam.Exam;
+import com.phoenix.mvc.db.entities.exam.ExamMasterPart;
+import com.phoenix.mvc.db.entities.exam.ExamPart;
+import com.phoenix.mvc.db.entities.exam.ExamType;
+import com.phoenix.mvc.db.entities.exam.Question;
+import com.phoenix.mvc.db.entities.user.Role;
+import com.phoenix.mvc.db.entities.user.User;
+
 
 public class InitializeDb {
 
 	public static void main(String[] args) {
 		
-		// CREATE TABLES
+		// CREATE TABLES		
 		AnnotationConfiguration config = new AnnotationConfiguration();
 		config.addAnnotatedClass(User.class);
 		config.addAnnotatedClass(Role.class);
@@ -30,8 +31,7 @@ public class InitializeDb {
 		config.addAnnotatedClass(Choice.class);
 		config.configure("hibernate.cfg.xml");
 		new SchemaExport(config).create(true, true);
-		
-		
+				
 		// ADD SAMPLE DATA
 		SessionFactory factory = config.buildSessionFactory();
 		Session session = factory.getCurrentSession();
@@ -39,33 +39,34 @@ public class InitializeDb {
 		
 		// USER
 		User uur = new User();
-		uur.setEmailAddress("arikanu@metu.edu.tr");
+		uur.setEmailAddress("u@a.com");
 		uur.setFirstName("Ugur");
 		uur.setLastName("Arikan");
-		uur.setPassWord("pass");		
+		uur.setPassword("pass");		
 		session.save(uur);
 		User baco = new User();
-		baco.setEmailAddress("huseyinbacanak@gmail.com");
+		baco.setEmailAddress("h@b.com");
 		baco.setFirstName("Huseyin");
 		baco.setLastName("Bacanak");
-		baco.setPassWord("pass");
+		baco.setPassword("pass");
 		session.save(baco);
 		User ikiz = new User();
-		ikiz.setEmailAddress("umut@ikizler.com");
+		ikiz.setEmailAddress("u@g.com");
 		ikiz.setFirstName("Umut");
 		ikiz.setLastName("Gumus");
-		ikiz.setPassWord("pass");
+		ikiz.setPassword("pass");
 		session.save(ikiz);
 		
 		// ROLE
 		Role admin = new Role();
 		admin.setRoleName("Admin");
 		admin.getUsers().add(uur);
+		admin.getUsers().add(ikiz);
 		session.save(admin);
 		Role student = new Role();
 		student.setRoleName("Student");
+		student.getUsers().add(uur);
 		student.getUsers().add(baco);
-		student.getUsers().add(ikiz);
 		session.save(student);	
 		
 		
@@ -201,13 +202,7 @@ public class InitializeDb {
 							mat1q1E.setQuestion(mat1q1);
 							session.save(mat1q1E);
 						
-		//*/
 		session.getTransaction().commit();
-		
-		
-		
-		
-		
 
 	}
 

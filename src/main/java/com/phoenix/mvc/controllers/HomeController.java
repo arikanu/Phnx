@@ -1,102 +1,57 @@
 package com.phoenix.mvc.controllers;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import com.phoenix.mvc.db.entities.User;
-import com.phoenix.mvc.db.queries.QLogin;
-import com.phoenix.mvc.db.queries.QUser;
-import com.phoenix.mvc.viewmodels.VM_Home;
+import com.phoenix.mvc.authentication.Login;
+import com.phoenix.mvc.authentication.LoginAuthentication;
 
-/**
- * Handles requests for the application home page.
- */
+
 @Controller
 public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale) {
-		logger.info("Welcome home! The client locale is {}.", locale);		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);		
-		String formattedDate = dateFormat.format(date);
-		VM_Home vm_home = new VM_Home();
-		vm_home.setValidLogin(false);
-		vm_home.setFormattedDate(formattedDate);
-		vm_home.setUser(null);
-		ModelAndView mavHome = new ModelAndView();
-		mavHome.setViewName("home");
-		mavHome.addObject("model", vm_home);
-		return mavHome;
-	}
-	
-	
-	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login() {
+	public ModelAndView root() {
+		System.out.println("@CTRLR: /GET");
+		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("login");
-		mav.addObject("loginUser", new User());
+		mav.setViewName("home");
+		mav.addObject("login", new Login());
 		return mav;
 	}
-	@RequestMapping(value = "/loginSubmit", method = RequestMethod.POST)
-	public ModelAndView loginSubmit(Locale locale, @ModelAttribute User userLoginAttempt) {
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);		
-		String formattedDate = dateFormat.format(date);
-		boolean isValidLogin = QLogin.isValidUser(userLoginAttempt);
-		VM_Home vmHome = new VM_Home();
-		vmHome.setValidLogin(isValidLogin);
-		vmHome.setFormattedDate(formattedDate);
-		if (isValidLogin) {
-			vmHome.setUser(QUser.getUser(userLoginAttempt.getEmailAddress()));
-		} else {
-			vmHome.setUser(userLoginAttempt);
-		}
-		ModelAndView mavHome = new ModelAndView("home");
-		mavHome.addObject("model", vmHome);
-		return mavHome;
-	}
-	
-	
-	
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public ModelAndView register() {
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public ModelAndView home() {
+		System.out.println("@CTRLR: homeGET");
+		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("register");
-		mav.addObject("registerUser", new User());
+		mav.setViewName("home");
+		mav.addObject("login", new Login());
 		return mav;
 	}
-	@RequestMapping(value = "/registerSubmit", method = RequestMethod.POST)
-	public ModelAndView registerSubmit(Locale locale, @ModelAttribute User userRegisterAttempt) {
+	
+	
+	
+	@RequestMapping(value = "/admin/home", method = RequestMethod.GET)
+	public ModelAndView adminHome() {
+		System.out.println("@CTRLR: adminHomeGET");
+		
 		ModelAndView mav = new ModelAndView();
-		if (QUser.existsUser(userRegisterAttempt.getEmailAddress())) {
-			mav.setViewName("register");
-			mav.addObject("registerUser", new User());			
-		} else {
-			Date date = new Date();
-			DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);		
-			String formattedDate = dateFormat.format(date);
-			QUser.addUser(userRegisterAttempt);
-			VM_Home vmHome = new VM_Home();
-			vmHome.setValidLogin(true);
-			vmHome.setFormattedDate(formattedDate);
-			vmHome.setUser(userRegisterAttempt);
-			mav.setViewName("home");
-			mav.addObject("model", vmHome);
-		}
+		mav.setViewName("admin/home");
+		mav.addObject("user", LoginAuthentication.getUser(SecurityContextHolder.getContext().getAuthentication().getName()));
+		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/student/home", method = RequestMethod.GET)
+	public ModelAndView studentHome() {
+		System.out.println("@CTRLR: studentHomeGET");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("student/home");
+		mav.addObject("user", LoginAuthentication.getUser(SecurityContextHolder.getContext().getAuthentication().getName()));
 		return mav;
 	}
 	

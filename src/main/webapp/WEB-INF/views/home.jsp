@@ -1,35 +1,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <html>
-<head>
-	<title>Home</title>
-</head>
-<body>
-<h1>
-	Hello world!  
-</h1>
-
-<P>  The time on the server is ${model.formattedDate}. </P>
-<P>  Valid Login = ${model.validLogin}. </P>
-<br>
-
-<c:choose>
-	<c:when test="${model.user != null }">
-		Email = ${model.user.emailAddress }<br>
-		Password = ${model.user.passWord }<br>
-		First Name = ${model.user.firstName }<br>
-		Last Name = ${model.user.lastName }<br>
-	</c:when>
-	<c:otherwise>
-		User is NULL.
-	</c:otherwise>
-</c:choose>
-
-<br />
-<P><a href="/mvc/login">Login</a></P>
-<P><a href="/mvc/register">Register</a></P>
-
-</body>
+	<head>
+		<title>Home</title>
+	</head>
+	<body>
+		<h1>Login Page</h1>
+		<form:form action="j_spring_security_check" method="post" commandName="login">
+			<table><tbody>
+				<tr>
+					<td><label for="j_username">Email Address:</label></td>
+					<td><form:input path="j_username"/>
+				</tr>
+				<tr>
+					<td><label for="j_password">Password:</label></td>
+					<td><form:password path="j_password"/>
+				</tr>
+				<tr>
+					<td colspan="2"><input id="submit" name="submit" type="submit" value="login" /></td>
+				</tr>
+			</tbody></table>			
+		</form:form>
+	</body>
 </html>
